@@ -1,6 +1,6 @@
 import CourseStatus from "./Status";
 
-export default function CourseHome({ params }: { params: { courseId: string } }) {
+export default function CourseHome({ params }: { params: { cid: string } }) {
   const modules = [
     {
       id: 1,

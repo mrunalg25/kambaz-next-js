@@ -5,11 +5,11 @@ export default function CourseLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { courseId: string };
+  params: { cid: string };
 }) {
   return (
     <div style={{ display: "flex" }}>
-      <CourseNavigation courseId={params.courseId} />
+      <CourseNavigation cid={params.cid} />
       <main style={{ flex: 1, padding: "20px" }}>{children}</main>
     </div>
   );

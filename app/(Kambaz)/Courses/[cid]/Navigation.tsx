@@ -1,14 +1,14 @@
 import Link from "next/link";
 
-export default function CourseNavigation({ courseId }: { courseId: string }) {
+export default function CourseNavigation({ cid }: { cid: string }) {
   const links = [
-    { label: "Home", href: `/Courses/${courseId}/Home` },
-    { label: "Modules", href: `/Courses/${courseId}/Modules` },
-    { label: "Piazza", href: `/Courses/${courseId}/Piazza` },
-    { label: "Zoom", href: `/Courses/${courseId}/Zoom` },
-    { label: "Quizzes", href: `/Courses/${courseId}/Quizzes` },
-    { label: "Assignments", href: `/Courses/${courseId}/Assignments` },
-    { label: "Grades", href: `/Courses/${courseId}/Grades` },
+    { label: "Home", href: `/Courses/${cid}/Home` },
+    { label: "Modules", href: `/Courses/${cid}/Modules` },
+    { label: "Piazza", href: `/Courses/${cid}/Piazza` },
+    { label: "Zoom", href: `/Courses/${cid}/Zoom` },
+    { label: "Quizzes", href: `/Courses/${cid}/Quizzes` },
+    { label: "Assignments", href: `/Courses/${cid}/Assignments` },
+    { label: "Grades", href: `/Courses/${cid}/Grades` },
   ];
 
   return (

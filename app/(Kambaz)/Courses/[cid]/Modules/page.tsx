@@ -1,4 +1,4 @@
-export default function Modules({ params }: { params: { courseId: string } }) {
+export default function Modules({ params }: { params: { cid: string } }) {
   const modules = [
     {
       id: 1,
@@ -31,7 +31,7 @@ export default function Modules({ params }: { params: { courseId: string } }) {
 
     return (
       <div>
-        <h1>Course {params.courseId} - Modules</h1>
+        <h1>Course {params.cid} - Modules</h1>
 
         {modules.map((module) => (
           <details key={module.id} style={{ marginBottom: "20px" }}>

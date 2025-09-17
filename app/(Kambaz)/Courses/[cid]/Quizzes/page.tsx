@@ -1,7 +1,7 @@
-export default function Quizzes({ params }: { params: { courseId: string } }) {
+export default function Quizzes({ params }: { params: { cid: string } }) {
   return (
     <div>
-      <h1>Course {params.courseId} - Quizzes</h1>
+      <h1>Course {params.cid} - Quizzes</h1>
       <p>Quizzes</p>
     </div>
   );

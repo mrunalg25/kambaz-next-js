@@ -1,7 +1,7 @@
-export default function CoursePage({ params }: { params: { courseId: string } }) {
+export default function CoursePage({ params }: { params: { cid: string } }) {
   return (
     <div style={{ padding: "20px" }}>
-      <h1>Course: {params.courseId}</h1>
+      <h1>Course: {params.cid}</h1>
       <p>This is the course home page.</p>
     </div>
   );

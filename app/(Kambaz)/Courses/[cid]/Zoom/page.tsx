@@ -1,7 +1,7 @@
-export default function Zoom({ params }: { params: { courseId: string } }) {
+export default function Zoom({ params }: { params: { cid: string } }) {
   return (
     <div>
-      <h1>Course {params.courseId} - Zoom</h1>
+      <h1>Course {params.cid} - Zoom</h1>
       <p>Zoom links</p>
     </div>
   );

@@ -1,7 +1,7 @@
-export default function Piazza({ params }: { params: { courseId: string } }) {
+export default function Piazza({ params }: { params: { cid: string } }) {
   return (
     <div>
-      <h1>Course {params.courseId} - Piazza</h1>
+      <h1>Course {params.cid} - Piazza</h1>
       <p>Piazza</p>
     </div>
   );
