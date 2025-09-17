@@ -1,21 +1,25 @@
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 
-export default async function CourseLayout({
+interface CourseLayoutProps {
+  children: ReactNode;
+  params: { cid: string }; // dynamic route param
+}
+
+export default function CourseLayout({
   children,
   params,
-}: {
-  children: ReactNode;
-  params: { cid: string }; // the dynamic route param
-}) {
+}: CourseLayoutProps) {
+  // If ESLint warns that 'params' is unused, prefix it with _
+  const { cid } = params; // extract cid safely
+
   return (
     <div style={{ display: "flex" }}>
-      <CourseNavigation cid={params.cid} />
+      <CourseNavigation cid={cid} />
       <main style={{ flex: 1, padding: "20px" }}>{children}</main>
     </div>
   );
 }
-
 
 
 // import CourseNavigation from "./Navigation";
