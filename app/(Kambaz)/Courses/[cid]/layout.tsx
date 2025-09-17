@@ -3,15 +3,15 @@ import CourseNavigation from "./Navigation";
 
 interface CourseLayoutProps {
   children: ReactNode;
-  params: { cid: string }; // dynamic route param
+  params: Promise<{ cid: string }>; // Next.js expects a Promise-wrapped param
 }
 
-export default function CourseLayout({
+export default async function CourseLayout({
   children,
   params,
 }: CourseLayoutProps) {
-  // If ESLint warns that 'params' is unused, prefix it with _
-  const { cid } = params; // extract cid safely
+  const resolvedParams = await params; // unwrap the Promise
+  const { cid } = resolvedParams;
 
   return (
     <div style={{ display: "flex" }}>
