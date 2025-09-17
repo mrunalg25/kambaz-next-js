@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 
-interface Props {
+export default async function CourseLayout({
+  children,
+  params,
+}: {
   children: ReactNode;
-  params: { cid: string }; // type the params directly
-}
-
-export default function CourseLayout({ children, params }: Props) {
+  params: { cid: string }; // the dynamic route param
+}) {
   return (
     <div style={{ display: "flex" }}>
       <CourseNavigation cid={params.cid} />
