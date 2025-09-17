@@ -1,16 +1,15 @@
 import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 
-export default function CourseLayout({
-  children,
-  params,
-}: {
+interface Props {
   children: ReactNode;
-  params: any;
-}) {
+  params: { cid: string }; // type the params directly
+}
+
+export default function CourseLayout({ children, params }: Props) {
   return (
     <div style={{ display: "flex" }}>
-      <CourseNavigation cid={params?.cid} />
+      <CourseNavigation cid={params.cid} />
       <main style={{ flex: 1, padding: "20px" }}>{children}</main>
     </div>
   );
