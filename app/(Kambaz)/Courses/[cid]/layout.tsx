@@ -1,12 +1,12 @@
+import { ReactNode } from "react";
 import CourseNavigation from "./Navigation";
 
-export default function CourseLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
+interface Props {
+  children: ReactNode;
   params: { cid: string };
-}) {
+}
+
+export default function CourseLayout({ children, params }: Props) {
   return (
     <div style={{ display: "flex" }}>
       <CourseNavigation cid={params.cid} />
@@ -14,6 +14,40 @@ export default function CourseLayout({
     </div>
   );
 }
+
+
+// import CourseNavigation from "./Navigation";
+
+// export default function CourseLayout({
+//   children,
+//   params,
+// }: {
+//   children: React.ReactNode;
+//   // ⛔ remove this line: params: { cid: string };
+// }: any) {
+//   return (
+//     <div style={{ display: "flex" }}>
+//       <CourseNavigation cid={params.cid} />
+//       <main style={{ flex: 1, padding: "20px" }}>{children}</main>
+//     </div>
+//   );
+// }
+
+
+// export default function CourseLayout({
+//   children,
+//   params,
+// }: {
+//   children: React.ReactNode;
+//   params: { cid: string };
+// }) {
+//   return (
+//     <div style={{ display: "flex" }}>
+//       <CourseNavigation cid={params.cid} />
+//       <main style={{ flex: 1, padding: "20px" }}>{children}</main>
+//     </div>
+//   );
+// }
 
 
 // import { ReactNode } from "react"; 
