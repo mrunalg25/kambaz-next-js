@@ -6,6 +6,7 @@ import { FaBookBible } from "react-icons/fa6";
 import { VscAccount } from "react-icons/vsc";
 import { Container, Row, Col, Table, ListGroupItem, ListGroup, FormLabel, FormGroup, FormControl, FormSelect, Form, InputGroup, Button, Card, CardBody, CardImg, CardText, CardTitle, Nav, NavItem, NavLink } from "react-bootstrap";
 import FormRange from "react-bootstrap/esm/FormRange";
+/* eslint-disable react/no-unescaped-entities */
 
 export default function Lab2() {
   return (
