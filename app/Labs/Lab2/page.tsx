@@ -14,7 +14,7 @@ export default function Lab2() {
       <h3>Styling with the STYLE attribute</h3>
       <p style={{ backgroundColor: "blue", color: "white" }}>
         Style attribute allows configuring look and feel
-        right on the element. Although it's very convenient
+        right on the element. Although it is very convenient
         it is considered bad practice and you should avoid
         using the style attribute
       </p>
@@ -26,7 +26,7 @@ export default function Lab2() {
           elements of the same name, e.g., P, we can refer to a specific element by its ID
         </p>
         <p id="wd-id-selector-2">
-          Here's another paragraph using a different ID and a different look and
+          Here is another paragraph using a different ID and a different look and
           feel
         </p>
       </div>
@@ -34,7 +34,7 @@ export default function Lab2() {
       <div id="wd-css-class-selectors">
         <h3>Class selectors</h3>
         <p className="wd-class-selector">
-          Instead of using IDs to refer to elements, you can use an element's CLASS attribute
+          Instead of using IDs to refer to elements, you can use an elements CLASS attribute
         </p>
         <h4 className="wd-class-selector">
           This heading has same style as paragraph above
@@ -48,7 +48,7 @@ export default function Lab2() {
             Selectors can be combined to refer elements in particular
             places in the document
             <p className="wd-selector-3">
-              This paragraph's red background is referenced as
+              This paragraphs red background is referenced as
               <br />
               .selector-2 .selector3<br />
               meaning the descendant of some ancestor.<br />
@@ -183,8 +183,8 @@ export default function Lab2() {
 
       <div id="wd-css-position-fixed">
         <h2>Fixed position</h2>
-        Checkout the blue square that says "Fixed position" stuck all the way on the right and half
-        way down the page. It doesn't scroll with the rest of the page. Its position is "Fixed".
+        Checkout the blue square that says Fixed position stuck all the way on the right and half
+        way down the page. It doesn't scroll with the rest of the page. Its position is Fixed.
         <div className="wd-pos-fixed wd-dimension-square wd-bg-color-blue wd-fg-color-white">
           Fixed position
         </div>
