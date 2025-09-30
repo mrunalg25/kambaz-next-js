@@ -1,13 +1,48 @@
-import Link from "next/link"; 
-export default function Signup() { 
-  return ( 
-    <div id="wd-signup-screen"> 
-      <h3>Sign up</h3> 
-      <input placeholder="username" className="wd-username" /><br/> 
-      <input placeholder="password" type="password" className="wd-password" /><br/> 
-      <input placeholder="verify password" 
-             type="password" className="wd-password-verify" /><br/> 
-      <Link  href="Profile" > Sign up </Link><br /> 
-      <Link  href="Signin" > Sign in </Link> 
-    </div> 
-);} 
+"use client";
+import Link from "next/link";
+import { Form } from "react-bootstrap";
+
+export default function Signup() {
+  return (
+    <div id="wd-signup-screen" className="p-3">
+      <h1>Sign up</h1>
+      <Form.Control 
+        placeholder="username" 
+        className="mb-2"
+      />
+      <Form.Control 
+        placeholder="password" 
+        type="password" 
+        className="mb-2"
+      />
+      <Form.Control 
+        placeholder="verify password" 
+        type="password" 
+        className="mb-2"
+      />
+      <Link 
+        href="/Dashboard" 
+        className="btn btn-primary w-100 mb-2"
+      >
+        Sign up
+      </Link>
+      <Link href="/Account/Signin">
+        Sign in
+      </Link>
+    </div>
+  );
+}
+
+// import Link from "next/link"; 
+// export default function Signup() { 
+//   return ( 
+//     <div id="wd-signup-screen"> 
+//       <h3>Sign up</h3> 
+//       <input placeholder="username" className="wd-username" /><br/> 
+//       <input placeholder="password" type="password" className="wd-password" /><br/> 
+//       <input placeholder="verify password" 
+//              type="password" className="wd-password-verify" /><br/> 
+//       <Link  href="Profile" > Sign up </Link><br /> 
+//       <Link  href="Signin" > Sign in </Link> 
+//     </div> 
+// );} 

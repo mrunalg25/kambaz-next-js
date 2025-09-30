@@ -11,7 +11,7 @@ export default function Labs() {
           <Link href="/Labs/Lab1">Lab 1: HTML Examples</Link>
         </li>
         <li>
-          <Link href="/Labs/Lab2">Lab 2: Forms</Link>
+          <Link href="/Labs/Lab2">Lab 2: Cascading Style Sheets</Link>
         </li>
       </ul>
 
