@@ -13,6 +13,9 @@ export default function Labs() {
         <li>
           <Link href="/Labs/Lab2">Lab 2: Cascading Style Sheets</Link>
         </li>
+        <li>
+          <Link href="/Labs/Lab3">Lab 3: Variables and Components</Link>
+        </li>
       </ul>
 
       <h3>Kambaz Application</h3>

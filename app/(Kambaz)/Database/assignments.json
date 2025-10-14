@@ -1,0 +1,52 @@
+[
+  {
+    "_id": "A101",
+    "title": "A1 - ENV + HTML",
+    "course": "RS101",
+    "description": "Create a simple HTML page",
+    "points": 100,
+    "dueDate": "2024-05-13",
+    "availableFromDate": "2024-05-06",
+    "availableUntilDate": "2024-05-20"
+  },
+  {
+    "_id": "A102",
+    "title": "A2 - CSS + BOOTSTRAP",
+    "course": "RS101",
+    "description": "Style your HTML page with CSS and Bootstrap",
+    "points": 100,
+    "dueDate": "2024-05-20",
+    "availableFromDate": "2024-05-13",
+    "availableUntilDate": "2024-05-27"
+  },
+  {
+    "_id": "A103",
+    "title": "A3 - JAVASCRIPT + REACT",
+    "course": "RS101",
+    "description": "Create a React application",
+    "points": 100,
+    "dueDate": "2024-05-27",
+    "availableFromDate": "2024-05-20",
+    "availableUntilDate": "2024-06-03"
+  },
+  {
+    "_id": "A201",
+    "title": "A1 - Aerodynamics Quiz",
+    "course": "RS102",
+    "description": "Quiz on aerodynamics basics",
+    "points": 100,
+    "dueDate": "2024-05-13",
+    "availableFromDate": "2024-05-06",
+    "availableUntilDate": "2024-05-20"
+  },
+  {
+    "_id": "A301",
+    "title": "A1 - Spacecraft Design Project",
+    "course": "RS103",
+    "description": "Design a spacecraft",
+    "points": 100,
+    "dueDate": "2024-05-13",
+    "availableFromDate": "2024-05-06",
+    "availableUntilDate": "2024-05-20"
+  }
+]

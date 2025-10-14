@@ -1,37 +1,65 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 
 export default function CourseNavigation() {
   const pathname = usePathname();
-
-  const links = [
-    { label: "Home", path: "/Courses/1234/Home" },
-    { label: "Modules", path: "/Courses/1234/Modules" },
-    { label: "Piazza", path: "/Courses/1234/Piazza" },
-    { label: "Zoom", path: "/Courses/1234/Zoom" },
-    { label: "Assignments", path: "/Courses/1234/Assignments" },
-    { label: "Quizzes", path: "/Courses/1234/Quizzes" },
-    { label: "Grades", path: "/Courses/1234/Grades" },
-    { label: "People", path: "/Courses/1234/People/Table" },
-  ];
+  const { cid } = useParams();
+  
+  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
 
   return (
     <div id="wd-courses-navigation" className="list-group fs-5 rounded-0">
       {links.map((link) => (
         <Link 
-          key={link.path}
-          href={link.path}
+          key={link}
+          href={`/Courses/${cid}/${link === "People" ? "People/Table" : link}`}
           className={`list-group-item border-0 text-decoration-none ${
-            pathname.includes(link.label) ? "active bg-white text-black" : "text-danger bg-white"
+            pathname.includes(link) ? "active bg-white text-black" : "text-danger bg-white"
           }`}
         >
-          {link.label}
+          {link}
         </Link>
       ))}
     </div>
   );
 }
+
+
+// "use client";
+// import Link from "next/link";
+// import { usePathname } from "next/navigation";
+
+// export default function CourseNavigation() {
+//   const pathname = usePathname();
+
+//   const links = [
+//     { label: "Home", path: "/Courses/1234/Home" },
+//     { label: "Modules", path: "/Courses/1234/Modules" },
+//     { label: "Piazza", path: "/Courses/1234/Piazza" },
+//     { label: "Zoom", path: "/Courses/1234/Zoom" },
+//     { label: "Assignments", path: "/Courses/1234/Assignments" },
+//     { label: "Quizzes", path: "/Courses/1234/Quizzes" },
+//     { label: "Grades", path: "/Courses/1234/Grades" },
+//     { label: "People", path: "/Courses/1234/People/Table" },
+//   ];
+
+//   return (
+//     <div id="wd-courses-navigation" className="list-group fs-5 rounded-0">
+//       {links.map((link) => (
+//         <Link 
+//           key={link.path}
+//           href={link.path}
+//           className={`list-group-item border-0 text-decoration-none ${
+//             pathname.includes(link.label) ? "active bg-white text-black" : "text-danger bg-white"
+//           }`}
+//         >
+//           {link.label}
+//         </Link>
+//       ))}
+//     </div>
+//   );
+// }
 
 // import Link from "next/link";
 
