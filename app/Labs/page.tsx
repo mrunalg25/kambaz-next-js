@@ -23,6 +23,9 @@ export default function Labs() {
             <Link href="/Labs/Lab4">Lab 4</Link>
           </li>
           <li className="list-group-item">
+            <Link href="/Labs/Lab5">Lab 5</Link>
+          </li>
+          <li className="list-group-item">
             <Link href="/">Kambaz</Link>
           </li>
         </ul>

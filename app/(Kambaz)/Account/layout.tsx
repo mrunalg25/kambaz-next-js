@@ -7,18 +7,44 @@ export default function AccountLayout({
   children: ReactNode 
 }>) {
   return (
-    <div id="wd-kambaz">
-      <div className="d-flex">
-        <div style={{ width: "200px" }} className="me-3">
-          <AccountNavigation />
-        </div>
-        <div className="flex-fill">
-          {children}
-        </div>
-      </div>
+    <div id="wd-account">
+      <table>
+        <tbody>
+          <tr>
+            <td valign="top">
+              <AccountNavigation />
+            </td>
+            <td valign="top" width="100%">
+              {children}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   );
 }
+
+// import { ReactNode } from "react";
+// import AccountNavigation from "./Navigation";
+
+// export default function AccountLayout({ 
+//   children 
+// }: Readonly<{ 
+//   children: ReactNode 
+// }>) {
+//   return (
+//     <div id="wd-kambaz">
+//       <div className="d-flex">
+//         <div style={{ width: "200px" }} className="me-3">
+//           <AccountNavigation />
+//         </div>
+//         <div className="flex-fill">
+//           {children}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 // import Link from "next/link";
 

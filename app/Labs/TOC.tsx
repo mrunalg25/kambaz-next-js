@@ -31,6 +31,11 @@ export default function TOC() {
           </Link>
         </li>
         <li className="list-group-item">
+          <Link href="/Labs/Lab5" id="wd-lab4-link">
+            Lab 5
+          </Link>
+        </li>
+        <li className="list-group-item">
           <Link href="/" id="wd-kambaz-link">
             Kambaz
           </Link>
