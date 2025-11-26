@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
-import * as coursesClient from "../../../client";
 import * as assignmentsClient from "../client";
 import { updateAssignment, addAssignment } from "../reducer";
 import Link from "next/link";
@@ -47,7 +46,7 @@ export default function AssignmentEditor() {
 
   const saveAssignment = async () => {
     if (aid === "new") {
-      const newAssignment = await coursesClient.createAssignmentForCourse(
+      const newAssignment = await assignmentsClient.createAssignmentForCourse(
         cid as string,
         assignment
       );
@@ -106,7 +105,7 @@ export default function AssignmentEditor() {
           className="form-control"
           value={assignment.points}
           onChange={(e) =>
-            setAssignment({ ...assignment, points: parseInt(e.target.value) })
+            setAssignment({ ...assignment, points: parseInt(e.target.value) || 0 })
           }
         />
       </div>
@@ -170,6 +169,180 @@ export default function AssignmentEditor() {
     </div>
   );
 }
+
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { useParams, useRouter } from "next/navigation";
+// import { useSelector, useDispatch } from "react-redux";
+// import * as coursesClient from "../../../client";
+// import * as assignmentsClient from "../client";
+// import { updateAssignment, addAssignment } from "../reducer";
+// import Link from "next/link";
+
+
+// export default function AssignmentEditor() {
+//   const { cid, aid } = useParams();
+//   const router = useRouter();
+//   const dispatch = useDispatch();
+//   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+
+//   const [assignment, setAssignment] = useState({
+//     _id: "",
+//     title: "",
+//     description: "",
+//     points: 100,
+//     dueDate: "",
+//     availableFromDate: "",
+//     availableUntilDate: "",
+//     course: cid,
+//   });
+
+//   const fetchAssignment = () => {
+//     if (aid === "new") {
+//       setAssignment({
+//         _id: "",
+//         title: "New Assignment",
+//         description: "",
+//         points: 100,
+//         dueDate: new Date().toISOString().split("T")[0],
+//         availableFromDate: new Date().toISOString().split("T")[0],
+//         availableUntilDate: new Date().toISOString().split("T")[0],
+//         course: cid as string,
+//       });
+//     } else {
+//       const foundAssignment = assignments.find((a: any) => a._id === aid);
+//       if (foundAssignment) {
+//         setAssignment(foundAssignment);
+//       }
+//     }
+//   };
+
+//   const saveAssignment = async () => {
+//     if (aid === "new") {
+//       const newAssignment = await coursesClient.createAssignmentForCourse(
+//         cid as string,
+//         assignment
+//       );
+//       dispatch(addAssignment(newAssignment));
+//     } else {
+//       await assignmentsClient.updateAssignment(assignment);
+//       dispatch(updateAssignment(assignment));
+//     }
+//     router.push(`/Courses/${cid}/Assignments`);
+//   };
+
+//   useEffect(() => {
+//     fetchAssignment();
+//   }, [aid]);
+
+//   return (
+//     <div id="wd-assignments-editor" className="container mt-3">
+//       <h3>{aid === "new" ? "New Assignment" : "Edit Assignment"}</h3>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-name" className="form-label">
+//           Assignment Name
+//         </label>
+//         <input
+//           id="wd-name"
+//           className="form-control"
+//           value={assignment.title}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, title: e.target.value })
+//           }
+//         />
+//       </div>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-description" className="form-label">
+//           Description
+//         </label>
+//         <textarea
+//           id="wd-description"
+//           className="form-control"
+//           rows={5}
+//           value={assignment.description}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, description: e.target.value })
+//           }
+//         />
+//       </div>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-points" className="form-label">
+//           Points
+//         </label>
+//         <input
+//           id="wd-points"
+//           type="number"
+//           className="form-control"
+//           value={assignment.points}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, points: parseInt(e.target.value) })
+//           }
+//         />
+//       </div>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-due-date" className="form-label">
+//           Due Date
+//         </label>
+//         <input
+//           id="wd-due-date"
+//           type="date"
+//           className="form-control"
+//           value={assignment.dueDate}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, dueDate: e.target.value })
+//           }
+//         />
+//       </div>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-available-from" className="form-label">
+//           Available From
+//         </label>
+//         <input
+//           id="wd-available-from"
+//           type="date"
+//           className="form-control"
+//           value={assignment.availableFromDate}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, availableFromDate: e.target.value })
+//           }
+//         />
+//       </div>
+
+//       <div className="mb-3">
+//         <label htmlFor="wd-available-until" className="form-label">
+//           Available Until
+//         </label>
+//         <input
+//           id="wd-available-until"
+//           type="date"
+//           className="form-control"
+//           value={assignment.availableUntilDate}
+//           onChange={(e) =>
+//             setAssignment({ ...assignment, availableUntilDate: e.target.value })
+//           }
+//         />
+//       </div>
+
+//       <div className="d-flex justify-content-end gap-2">
+//         <Link
+//           href={`/Courses/${cid}/Assignments`}
+//           className="btn btn-secondary"
+//         >
+//           Cancel
+//         </Link>
+//         <button onClick={saveAssignment} className="btn btn-danger">
+//           Save
+//         </button>
+//       </div>
+//     </div>
+//   );
+// }
 
 // "use client";
 // import { Form, Row, Col, Button } from "react-bootstrap";

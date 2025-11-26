@@ -1,9 +1,8 @@
 "use client";
-
-import * as client from "./client";
 import { useEffect, useState } from "react";
-import { setCurrentUser } from "./reducer";
 import { useDispatch } from "react-redux";
+import { setCurrentUser } from "./reducer";
+import * as client from "./client";
 
 export default function Session({ children }: { children: any }) {
   const [pending, setPending] = useState(true);
@@ -12,25 +11,62 @@ export default function Session({ children }: { children: any }) {
   const fetchProfile = async () => {
     try {
       const currentUser = await client.profile();
-      dispatch(setCurrentUser(currentUser));
+      if (currentUser) {
+        dispatch(setCurrentUser(currentUser));
+      }
     } catch (err: any) {
-      // 401 error is expected when not logged in - just ignore it
-      console.log("No user session found");
+      if (err.response?.status !== 401) {
+        console.error("Error fetching profile:", err);
+      }
+    } finally {
+      setPending(false);
     }
-    setPending(false);
   };
 
   useEffect(() => {
     fetchProfile();
   }, []);
 
-  if (!pending) {
-    return children;
+  if (pending) {
+    return <div className="p-4">Loading...</div>;
   }
-  
-  // Optional: Show loading spinner while checking session
-  return <div>Loading...</div>;
+
+  return <>{children}</>;
 }
+
+// "use client";
+
+// import * as client from "./client";
+// import { useEffect, useState } from "react";
+// import { setCurrentUser } from "./reducer";
+// import { useDispatch } from "react-redux";
+
+// export default function Session({ children }: { children: any }) {
+//   const [pending, setPending] = useState(true);
+//   const dispatch = useDispatch();
+
+//   const fetchProfile = async () => {
+//     try {
+//       const currentUser = await client.profile();
+//       dispatch(setCurrentUser(currentUser));
+//     } catch (err: any) {
+//       // 401 error is expected when not logged in - just ignore it
+//       console.log("No user session found");
+//     }
+//     setPending(false);
+//   };
+
+//   useEffect(() => {
+//     fetchProfile();
+//   }, []);
+
+//   if (!pending) {
+//     return children;
+//   }
+  
+//   // Optional: Show loading spinner while checking session
+//   return <div>Loading...</div>;
+// }
 
 
 // "use client";
