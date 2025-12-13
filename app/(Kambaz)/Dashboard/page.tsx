@@ -10,6 +10,8 @@ export default function Dashboard() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const [courses, setCourses] = useState<any[]>([]);
   const [enrolling, setEnrolling] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [course, setCourse] = useState({
     _id: "",
     name: "New Course",
@@ -19,50 +21,66 @@ export default function Dashboard() {
     description: "New Description",
   });
 
+  const safeFilterCourses = (coursesArray: any[]) => {
+    if (!Array.isArray(coursesArray)) return [];
+    return coursesArray.filter((c) => {
+      return c !== null && c !== undefined && c._id !== null && c._id !== undefined && c._id !== "";
+    });
+  };
+
   const fetchCourses = async () => {
     try {
+      setLoading(true);
+      setError("");
+      
       if (!currentUser) {
         setCourses([]);
+        setLoading(false);
         return;
       }
       
       if (enrolling) {
-        const allCourses = await courseClient.fetchAllCourses();
-        const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
+        const [allCourses, enrolledCourses] = await Promise.all([
+          courseClient.fetchAllCourses(),
+          userClient.findCoursesForUser(currentUser._id)
+        ]);
         
-        // Safe filtering and mapping
-        const validAllCourses = Array.isArray(allCourses) 
-          ? allCourses.filter((c) => c && c._id) 
-          : [];
-        
-        const validEnrolledCourses = Array.isArray(enrolledCourses)
-          ? enrolledCourses.filter((c) => c && c._id)
-          : [];
+        const validAllCourses = safeFilterCourses(allCourses);
+        const validEnrolledCourses = safeFilterCourses(enrolledCourses);
         
         const coursesWithEnrollment = validAllCourses.map((course) => {
-          const enrolled = validEnrolledCourses.some((ec) => ec._id === course._id);
+          const enrolled = validEnrolledCourses.some((ec) => ec?._id === course?._id);
           return { ...course, enrolled };
         });
         
         setCourses(coursesWithEnrollment);
       } else {
         const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
-        const validCourses = Array.isArray(enrolledCourses)
-          ? enrolledCourses.filter((c) => c && c._id)
-          : [];
+        const validCourses = safeFilterCourses(enrolledCourses);
         setCourses(validCourses);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching courses:", error);
+      setError(error.message || "Failed to load courses");
       setCourses([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   const addNewCourse = async () => {
     try {
       const newCourse = await courseClient.createCourse(course);
-      if (newCourse && newCourse._id) {
-        setCourses([...courses, newCourse]);
+      if (newCourse?._id) {
+        setCourses((prev) => [...prev, newCourse]);
+        setCourse({
+          _id: "",
+          name: "New Course",
+          number: "New Number",
+          startDate: "2023-09-10",
+          endDate: "2023-12-15",
+          description: "New Description",
+        });
       }
     } catch (error) {
       console.error("Error adding course:", error);
@@ -72,7 +90,7 @@ export default function Dashboard() {
   const deleteCourse = async (courseId: string) => {
     try {
       await courseClient.deleteCourse(courseId);
-      setCourses(courses.filter((c) => c && c._id !== courseId));
+      setCourses((prev) => prev.filter((c) => c?._id !== courseId));
     } catch (error) {
       console.error("Error deleting course:", error);
     }
@@ -81,13 +99,8 @@ export default function Dashboard() {
   const updateCourse = async () => {
     try {
       await courseClient.updateCourse(course);
-      setCourses(
-        courses.map((c) => {
-          if (c && c._id === course._id) {
-            return course;
-          }
-          return c;
-        }).filter((c) => c && c._id)
+      setCourses((prev) =>
+        prev.map((c) => (c?._id === course._id ? course : c))
       );
     } catch (error) {
       console.error("Error updating course:", error);
@@ -104,13 +117,10 @@ export default function Dashboard() {
         await userClient.unenrollFromCourse(currentUser._id, courseId);
       }
       
-      setCourses(
-        courses.map((course) => {
-          if (course && course._id === courseId) {
-            return { ...course, enrolled };
-          }
-          return course;
-        }).filter((c) => c && c._id)
+      setCourses((prev) =>
+        prev.map((course) =>
+          course?._id === courseId ? { ...course, enrolled } : course
+        )
       );
     } catch (error) {
       console.error("Error updating enrollment:", error);
@@ -118,11 +128,39 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchCourses();
+    if (currentUser) {
+      fetchCourses();
+    }
   }, [currentUser, enrolling]);
 
   if (!currentUser) {
-    return <div className="p-4">Please sign in to view courses.</div>;
+    return (
+      <div className="p-4">
+        <h1>Dashboard</h1>
+        <p>Please sign in to view courses.</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="p-4">
+        <h1>Dashboard</h1>
+        <p>Loading courses...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4">
+        <h1>Dashboard</h1>
+        <div className="alert alert-danger">{error}</div>
+        <button onClick={fetchCourses} className="btn btn-primary">
+          Retry
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -168,10 +206,9 @@ export default function Dashboard() {
           <textarea
             value={course.description}
             className="form-control mb-2"
-            onChange={(e) =>
-              setCourse({ ...course, description: e.target.value })
-            }
+            onChange={(e) => setCourse({ ...course, description: e.target.value })}
             placeholder="Course Description"
+            rows={3}
           />
           <hr />
         </>
@@ -182,81 +219,89 @@ export default function Dashboard() {
       </h2>
       <hr />
 
-      <div id="wd-dashboard-courses" className="row">
-        <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses.map((course) => (
-            <div
-              key={course._id}
-              className="wd-dashboard-course col"
-              style={{ width: "300px" }}
-            >
-              <div className="card rounded-3 overflow-hidden">
-                <Link
-                  href={`/Courses/${course._id}/Home`}
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
+      {courses.length === 0 ? (
+        <p>No courses available.</p>
+      ) : (
+        <div id="wd-dashboard-courses" className="row">
+          <div className="row row-cols-1 row-cols-md-5 g-4">
+            {courses.map((course) => {
+              if (!course || !course._id) return null;
+              
+              return (
+                <div
+                  key={course._id}
+                  className="wd-dashboard-course col"
+                  style={{ width: "300px" }}
                 >
-                  <img
-                    src="/course.png"
-                    width="100%"
-                    height={160}
-                    alt="course"
-                  />
-                  <div className="card-body">
-                    {enrolling && (
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault();
-                          updateEnrollment(course._id, !course.enrolled);
-                        }}
-                        className={`btn ${
-                          course.enrolled ? "btn-danger" : "btn-success"
-                        } float-end`}
-                      >
-                        {course.enrolled ? "Unenroll" : "Enroll"}
-                      </button>
-                    )}
-                    <h5 className="wd-dashboard-course-title card-title">
-                      {course.name || "Untitled Course"}
-                    </h5>
-                    <p
-                      className="wd-dashboard-course-title card-text overflow-y-hidden"
-                      style={{ maxHeight: 100 }}
+                  <div className="card rounded-3 overflow-hidden">
+                    <Link
+                      href={`/Courses/${course._id}/Home`}
+                      className="wd-dashboard-course-link text-decoration-none text-dark"
                     >
-                      {course.description || "No description"}
-                    </p>
-                    <button className="btn btn-primary">Go</button>
+                      <img
+                        src="/course.png"
+                        width="100%"
+                        height={160}
+                        alt="course"
+                      />
+                      <div className="card-body">
+                        {enrolling && (
+                          <button
+                            onClick={(event) => {
+                              event.preventDefault();
+                              updateEnrollment(course._id, !course.enrolled);
+                            }}
+                            className={`btn ${
+                              course.enrolled ? "btn-danger" : "btn-success"
+                            } float-end`}
+                          >
+                            {course.enrolled ? "Unenroll" : "Enroll"}
+                          </button>
+                        )}
+                        <h5 className="wd-dashboard-course-title card-title">
+                          {course.name || "Untitled Course"}
+                        </h5>
+                        <p
+                          className="wd-dashboard-course-title card-text overflow-y-hidden"
+                          style={{ maxHeight: 100 }}
+                        >
+                          {course.description || "No description"}
+                        </p>
+                        <button className="btn btn-primary">Go</button>
 
-                    {currentUser.role === "FACULTY" && !enrolling && (
-                      <>
-                        <button
-                          onClick={(event) => {
-                            event.preventDefault();
-                            deleteCourse(course._id);
-                          }}
-                          className="btn btn-danger float-end"
-                          id="wd-delete-course-click"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          id="wd-edit-course-click"
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setCourse(course);
-                          }}
-                          className="btn btn-warning me-2 float-end"
-                        >
-                          Edit
-                        </button>
-                      </>
-                    )}
+                        {currentUser.role === "FACULTY" && !enrolling && (
+                          <>
+                            <button
+                              onClick={(event) => {
+                                event.preventDefault();
+                                deleteCourse(course._id);
+                              }}
+                              className="btn btn-danger float-end"
+                              id="wd-delete-course-click"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              id="wd-edit-course-click"
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setCourse(course);
+                              }}
+                              className="btn btn-warning me-2 float-end"
+                            >
+                              Edit
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              </div>
-            </div>
-          ))}
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
