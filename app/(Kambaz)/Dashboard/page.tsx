@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import * as courseClient from "../Courses/client";
-import * * userClient from "../Account/client";
+import * as userClient from "../Account/client";
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
