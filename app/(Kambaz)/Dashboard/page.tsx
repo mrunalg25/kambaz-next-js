@@ -2,16 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import * as courseClient from "../Courses/client";
-import * as userClient from "../Account/client";
+import * * userClient from "../Account/client";
 
 export default function Dashboard() {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   const [courses, setCourses] = useState<any[]>([]);
   const [enrolling, setEnrolling] = useState(false);
-  const router = useRouter();
   const [course, setCourse] = useState({
     _id: "",
     name: "New Course",
@@ -23,35 +21,49 @@ export default function Dashboard() {
 
   const fetchCourses = async () => {
     try {
-      if (!currentUser) return;
+      if (!currentUser) {
+        setCourses([]);
+        return;
+      }
       
       if (enrolling) {
-        // Show all courses with enrollment status
         const allCourses = await courseClient.fetchAllCourses();
         const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
         
-        const coursesWithEnrollment = allCourses
-          .filter((c: any) => c && c._id)  // ← Add this filter
-          .map((course: any) => {
-            const enrolled = enrolledCourses.some((ec: any) => ec && ec._id === course._id);
-            return { ...course, enrolled };
-          });
+        // Safe filtering and mapping
+        const validAllCourses = Array.isArray(allCourses) 
+          ? allCourses.filter((c) => c && c._id) 
+          : [];
+        
+        const validEnrolledCourses = Array.isArray(enrolledCourses)
+          ? enrolledCourses.filter((c) => c && c._id)
+          : [];
+        
+        const coursesWithEnrollment = validAllCourses.map((course) => {
+          const enrolled = validEnrolledCourses.some((ec) => ec._id === course._id);
+          return { ...course, enrolled };
+        });
         
         setCourses(coursesWithEnrollment);
       } else {
-        // Show only enrolled courses
         const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
-        setCourses(enrolledCourses.filter((c: any) => c && c._id));  // ← Add this filter
+        const validCourses = Array.isArray(enrolledCourses)
+          ? enrolledCourses.filter((c) => c && c._id)
+          : [];
+        setCourses(validCourses);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
+      setCourses([]);
     }
   };
 
   const addNewCourse = async () => {
     try {
       const newCourse = await courseClient.createCourse(course);
-      setCourses([...courses, newCourse]);
+      if (newCourse && newCourse._id) {
+        setCourses([...courses, newCourse]);
+      }
     } catch (error) {
       console.error("Error adding course:", error);
     }
@@ -60,7 +72,7 @@ export default function Dashboard() {
   const deleteCourse = async (courseId: string) => {
     try {
       await courseClient.deleteCourse(courseId);
-      setCourses(courses.filter((c) => c._id !== courseId));
+      setCourses(courses.filter((c) => c && c._id !== courseId));
     } catch (error) {
       console.error("Error deleting course:", error);
     }
@@ -71,12 +83,11 @@ export default function Dashboard() {
       await courseClient.updateCourse(course);
       setCourses(
         courses.map((c) => {
-          if (c._id === course._id) {
+          if (c && c._id === course._id) {
             return course;
-          } else {
-            return c;
           }
-        })
+          return c;
+        }).filter((c) => c && c._id)
       );
     } catch (error) {
       console.error("Error updating course:", error);
@@ -95,11 +106,11 @@ export default function Dashboard() {
       
       setCourses(
         courses.map((course) => {
-          if (course._id === courseId) {
+          if (course && course._id === courseId) {
             return { ...course, enrolled };
           }
           return course;
-        })
+        }).filter((c) => c && c._id)
       );
     } catch (error) {
       console.error("Error updating enrollment:", error);
@@ -173,80 +184,77 @@ export default function Dashboard() {
 
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses
-            .filter((course) => course && course._id)  // ← Added this filter
-            .map((course) => (
-              <div
-                key={course._id}
-                className="wd-dashboard-course col"
-                style={{ width: "300px" }}
-              >
-                <div className="card rounded-3 overflow-hidden">
-                  <Link
-                    href={`/Courses/${course._id}/Home`}
-                    className="wd-dashboard-course-link text-decoration-none text-dark"
-                  >
-                    <img
-                      src="/course.png"
-                      width="100%"
-                      height={160}
-                      alt="course"
-                    />
-                    <div className="card-body">
-                      {enrolling && (
+          {courses.map((course) => (
+            <div
+              key={course._id}
+              className="wd-dashboard-course col"
+              style={{ width: "300px" }}
+            >
+              <div className="card rounded-3 overflow-hidden">
+                <Link
+                  href={`/Courses/${course._id}/Home`}
+                  className="wd-dashboard-course-link text-decoration-none text-dark"
+                >
+                  <img
+                    src="/course.png"
+                    width="100%"
+                    height={160}
+                    alt="course"
+                  />
+                  <div className="card-body">
+                    {enrolling && (
+                      <button
+                        onClick={(event) => {
+                          event.preventDefault();
+                          updateEnrollment(course._id, !course.enrolled);
+                        }}
+                        className={`btn ${
+                          course.enrolled ? "btn-danger" : "btn-success"
+                        } float-end`}
+                      >
+                        {course.enrolled ? "Unenroll" : "Enroll"}
+                      </button>
+                    )}
+                    <h5 className="wd-dashboard-course-title card-title">
+                      {course.name || "Untitled Course"}
+                    </h5>
+                    <p
+                      className="wd-dashboard-course-title card-text overflow-y-hidden"
+                      style={{ maxHeight: 100 }}
+                    >
+                      {course.description || "No description"}
+                    </p>
+                    <button className="btn btn-primary">Go</button>
+
+                    {currentUser.role === "FACULTY" && !enrolling && (
+                      <>
                         <button
                           onClick={(event) => {
                             event.preventDefault();
-                            updateEnrollment(course._id, !course.enrolled);
+                            deleteCourse(course._id);
                           }}
-                          className={`btn ${
-                            course.enrolled ? "btn-danger" : "btn-success"
-                          } float-end`}
+                          className="btn btn-danger float-end"
+                          id="wd-delete-course-click"
                         >
-                          {course.enrolled ? "Unenroll" : "Enroll"}
+                          Delete
                         </button>
-                      )}
-                      <h5 className="wd-dashboard-course-title card-title">
-                        {course.name}
-                      </h5>
-                      <p
-                        className="wd-dashboard-course-title card-text overflow-y-hidden"
-                        style={{ maxHeight: 100 }}
-                      >
-                        {course.description}
-                      </p>
-                      <button className="btn btn-primary">Go</button>
-
-                      {currentUser.role === "FACULTY" && !enrolling && (
-                        <>
-                          <button
-                            onClick={(event) => {
-                              event.preventDefault();
-                              deleteCourse(course._id);
-                            }}
-                            className="btn btn-danger float-end"
-                            id="wd-delete-course-click"
-                          >
-                            Delete
-                          </button>
-                          <button
-                            id="wd-edit-course-click"
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setCourse(course);
-                            }}
-                            className="btn btn-warning me-2 float-end"
-                          >
-                            Edit
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </Link>
-                </div>
+                        <button
+                          id="wd-edit-course-click"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCourse(course);
+                          }}
+                          className="btn btn-warning me-2 float-end"
+                        >
+                          Edit
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </Link>
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
       </div>
     </div>
