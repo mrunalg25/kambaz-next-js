@@ -16,7 +16,7 @@ export default function Kambaz() {
           <p style={{ fontSize: "0.95rem", marginBottom: "0.25rem" }}>
             <strong>Frontend Repository:</strong>{" "}
             <a 
-              href="https://github.com/Abirami0202/kambaz-next-js" 
+              href="https://github.com/mrunalg25/kambaz-next-js" 
               target="_blank" 
               rel="noopener noreferrer"
               style={{ color: "#0070f3", textDecoration: "underline" }}
@@ -27,7 +27,7 @@ export default function Kambaz() {
           <p style={{ fontSize: "0.95rem" }}>
             <strong>Backend Repository:</strong>{" "}
             <a 
-              href="https://github.com/Abirami0202/kambaz-node-server-app" 
+              href="https://github.com/mrunalg25/kambaz-node-server-app" 
               target="_blank" 
               rel="noopener noreferrer"
               style={{ color: "#0070f3", textDecoration: "underline" }}
