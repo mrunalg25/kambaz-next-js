@@ -1,0 +1,93 @@
+[
+  {
+    "username": "iron_man",
+    "password": "stark123",
+    "firstName": "Ironman",
+    "lastName": "Stark",
+    "email": "abirami@northeastern.edu",
+    "dob": "2000-05-15",
+    "role": "STUDENT",
+    "loginId": "001234561S",
+    "section": "S101",
+    "lastActivity": "2024-10-01",
+    "totalActivity": "10:21:32"
+  },
+  {
+    "username": "malar",
+    "password": "mal123",
+    "firstName": "Malar",
+    "lastName": "Krishnan",
+    "email": "malar@northeastern.edu",
+    "dob": "1999-08-20",
+    "role": "STUDENT",
+    "loginId": "001234562S",
+    "section": "S101",
+    "lastActivity": "2024-10-02",
+    "totalActivity": "12:15:20"
+  },
+  {
+    "username": "vimal",
+    "password": "vim123",
+    "firstName": "Vimal",
+    "lastName": "Kumar",
+    "email": "vimal@northeastern.edu",
+    "dob": "2001-03-10",
+    "role": "STUDENT",
+    "loginId": "001234563S",
+    "section": "S102",
+    "lastActivity": "2024-10-03",
+    "totalActivity": "08:45:10"
+  },
+  {
+    "username": "arun",
+    "password": "aru123",
+    "firstName": "Arun",
+    "lastName": "Raj",
+    "email": "arun@northeastern.edu",
+    "dob": "2000-11-25",
+    "role": "TA",
+    "loginId": "001234564T",
+    "section": "S101",
+    "lastActivity": "2024-10-04",
+    "totalActivity": "15:30:45"
+  },
+  {
+    "username": "priya",
+    "password": "pri123",
+    "firstName": "Priya",
+    "lastName": "Sharma",
+    "email": "priya@northeastern.edu",
+    "dob": "1998-07-12",
+    "role": "STUDENT",
+    "loginId": "001234565S",
+    "section": "S102",
+    "lastActivity": "2024-10-05",
+    "totalActivity": "09:20:15"
+  },
+  {
+    "username": "karthik",
+    "password": "kar123",
+    "firstName": "Karthik",
+    "lastName": "Venkat",
+    "email": "karthik@northeastern.edu",
+    "dob": "2001-01-30",
+    "role": "STUDENT",
+    "loginId": "001234566S",
+    "section": "S101",
+    "lastActivity": "2024-10-06",
+    "totalActivity": "11:10:30"
+  },
+  {
+    "username": "sujatha",
+    "password": "suja123",
+    "firstName": "suji",
+    "lastName": "gopal",
+    "email": "sujatha@northeastern.edu",
+    "dob": "1997-09-18",
+    "role": "ADMIN",
+    "loginId": "001234567A",
+    "section": "S101",
+    "lastActivity": "2024-10-07",
+    "totalActivity": "20:45:50"
+  }
+]

@@ -1,0 +1,13 @@
+/* eslint-disable prefer-const */
+/* eslint-disable no-var */
+export default function TernaryOperator() {
+  const loggedIn = true;  // Changed from let to const
+  
+  return (
+    <div id="wd-ternary-operator">
+      <h4>Logged In</h4>
+      {loggedIn ? <p>Welcome</p> : <p>Please login</p>}
+      <hr/>
+    </div>
+  );
+}
